@@ -1,1 +1,50 @@
-test
+trigger:
+- master
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+- script: |
+    sudo apt update
+    sudo apt install -y wget
+    wget https://github.com/openexr/openexr/releases/download/v2.3.0/ilmbase-2.3.0.tar.gz
+  displayName: Download ILMLab archive
+- task: ExtractFiles@1
+  inputs:
+    archiveFilePatterns: '*.tar.gz' 
+    destinationFolder: ilmbase-2.3.0
+    cleanDestinationFolder: true 
+  displayName: Extract ILMLab archive
+- script: |
+    cd ilmbase-2.3.0
+    sudo mkdir /usr/local/lib/ilmlab
+    ./bootstrap
+    ./configure --prefix=/usr/local/lib/ilmlab
+    sudo make -j4
+    sudo make install
+    sudo ls /usr/local/lib/ilmlab
+  displayName: Build ILMBase 
+  workingDirectory: ilmbase-2.3.0
+- script: |
+    sudo apt update
+    sudo apt install -y wget
+    wget https://github.com/openexr/openexr/releases/download/v2.3.0/openexr-2.3.0.tar.gz
+  displayName: Download OpenEXR archive
+- task: ExtractFiles@1
+  inputs:
+    archiveFilePatterns: '*.tar.gz' 
+    destinationFolder: openexr-2.3.0
+    cleanDestinationFolder: true 
+  displayName: Extract OpenEXR archive
+- script: |
+    ls
+    cd openexr-2.3.0
+    sudo mkdir /usr/local/lib/openexr
+    ./bootstrap
+    ./configure --prefix=/usr/local/lib/openexr --with-ilmbase-prefix=/usr/local/lib/ilmlab --enable-imfexamples
+    sudo make -j4
+    sudo make install
+    sudo ls /usr/local/lib/openexr
+  displayName: Build OpenEXR 
+  workingDirectory: openexr-2.3.0
