@@ -28,6 +28,15 @@ steps:
     sudo cp ilmbase-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
   displayName: Build ILMBase 
   workingDirectory: ilmbase-2.3.0
+- task: GitHubRelease@0
+  inputs:
+    gitHubConnection: GitHub connection 1 
+    repositoryName: cgwire/generic-builds
+    action: create
+    target: 3de0dbd1407c8bc44b373fe425c323d8da02f3f1
+    tagSource: auto
+    tag: 2.3.0
+  displayName: Release IlmBase to Github 
 - script: |
     sudo apt update
     sudo apt install -y wget
@@ -60,4 +69,4 @@ steps:
     target: 3de0dbd1407c8bc44b373fe425c323d8da02f3f1
     tagSource: auto
     tag: 2.3.0
-  displayName: Release to Github 
+  displayName: Release OpenEXR to Github 
