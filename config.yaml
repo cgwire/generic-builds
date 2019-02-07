@@ -55,7 +55,7 @@ steps:
     gitHubConnection: GitHub connection 1 
     repositoryName: cgwire/generic-builds
     action: create
-    target: 2.3.0
+    target: '$(Build.SourceVersion)'
     tagSource: auto
     tag: 2.3.0
   displayName: Release to Github 
