@@ -24,6 +24,8 @@ steps:
     sudo make -j4
     sudo make install
     sudo ls /usr/local/lib/ilmlab
+    sudo tar -cvzf ilmbase-2.3.0.tar.gz /usr/local/lib/ilmlab 
+    sudo cp ilmbase-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
   displayName: Build ILMBase 
   workingDirectory: ilmbase-2.3.0
 - script: |
