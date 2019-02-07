@@ -54,7 +54,7 @@ steps:
   inputs:
     gitHubConnection: GitHub connection 1 
     repositoryName: cgwire/generic-builds
-    action: create'
+    action: create
     target: 2.3.0
     tagSource: auto
     tag: 2.3.0
