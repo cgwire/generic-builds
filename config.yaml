@@ -58,3 +58,4 @@ steps:
     target: '2.3.0'
     tagSource: 'auto'
     tag: '2.3.0'
+  displayName: Release to Github 
