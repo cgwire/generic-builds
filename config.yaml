@@ -24,6 +24,7 @@ steps:
     sudo make -j4
     sudo make install
     sudo ls /usr/local/lib/ilmlab
+    cd 
     sudo tar -cvzf ilmbase-2.3.0.tar.gz -C /usr/local/lib/ilmlab .
   displayName: Build ILMBase 
   workingDirectory: ilmbase-2.3.0
@@ -44,9 +45,10 @@ steps:
     ./configure --prefix=/usr/local/lib/openexr --with-ilmbase-prefix=/usr/local/lib/ilmlab --enable-imfexamples
     sudo make -j4
     sudo make install
+    cd
     sudo tar -cvzf openexr-2.3.0.tar.gz -C /usr/local/lib/openexr .
     sudo cp openexr-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
-    sudo cp ilmbase-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
+    cp ilmbase-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
     ls $(Build.ArtifactStagingDirectory)
   displayName: Build OpenEXR 
   workingDirectory: openexr-2.3.0
