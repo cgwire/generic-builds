@@ -46,5 +46,15 @@ steps:
     sudo make -j4
     sudo make install
     sudo ls /usr/local/lib/openexr
+    sudo tar -cvzf openexr-2.3.0.tar.gz /usr/local/lib/openexr 
+    sudo cp openexr-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
   displayName: Build OpenEXR 
   workingDirectory: openexr-2.3.0
+- task: GitHubRelease@0
+  inputs:
+    gitHubConnection: GitHub connection 1 
+    repositoryName: cgwire/generic-builds
+    action: 'create'
+    target: '2.3.0'
+    tagSource: 'auto'
+    tag: '2.3.0'
