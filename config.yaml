@@ -95,8 +95,7 @@ steps:
     sudo make -j4
     sudo make test
     sudo tar -cvzf alembic-1.7.10.tar.gz * 
-  displayName: Build Alembic 
-  workingDirectory: alembic
+  displayName: Build Alembic
 - task: GitHubRelease@0
   inputs:
     gitHubConnection: GitHub connection 1 
