@@ -44,7 +44,7 @@ steps:
     sudo pip install numpy
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/pyilmbase/lib
     cd pyilmbase-2.3.0
-    ./configure --prefix=/usr/local/lib/pyilmbase --with-ilmbase-prefix=/usr/local/lib/ilmbase
+    ./configure --prefix=/usr/local/lib/pyilmbase --with-ilmbase-prefix=/usr/local/lib/ilmbase/lib
     sudo make -j4
     sudo make install
     cd /usr/local/lib/pyilmbase
