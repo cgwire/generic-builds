@@ -8,6 +8,8 @@ steps:
 - script: |
     sudo apt update
     sudo apt install -y wget python python-pip
+  displayName: Install dependencies
+- script: |
     wget https://github.com/openexr/openexr/releases/download/v2.3.0/ilmbase-2.3.0.tar.gz
   displayName: Download ILMLab archive
 - task: ExtractFiles@1
