@@ -7,7 +7,7 @@ pool:
 steps:
 - script: |
     sudo apt update
-    sudo apt install -y wget
+    sudo apt install -y wget python python-pip
     wget https://github.com/openexr/openexr/releases/download/v2.3.0/ilmbase-2.3.0.tar.gz
   displayName: Download ILMLab archive
 - task: ExtractFiles@1
@@ -18,16 +18,29 @@ steps:
   displayName: Extract ILMLab archive
 - script: |
     cd ilmbase-2.3.0
-    sudo mkdir /usr/local/lib/ilmlab
+    sudo mkdir /usr/local/lib/ilmbase
     ./bootstrap
-    ./configure --prefix=/usr/local/lib/ilmlab
+    ./configure --prefix=/usr/local/lib/ilmbase
     sudo make -j4
     sudo make install
-    sudo ls /usr/local/lib/ilmlab
     cd 
-    sudo tar -cvzf ilmbase-2.3.0.tar.gz -C /usr/local/lib/ilmlab .
+    sudo tar -cvzf ilmbase-2.3.0.tar.gz -C /usr/local/lib/ilmbase .
   displayName: Build ILMBase 
   workingDirectory: ilmbase-2.3.0
+- script: |
+    wget https://github.com/openexr/openexr/releases/download/v2.3.0/pyilmbase-2.3.0.tar.gz
+    tar -xvzf pyilmbase-2.3.0.tar.gz
+    CGWIRE_PYILMBASE_PATH=`realpath pyilmbase-2.3.0_env`
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:pyilmbase-2.3.0/lib
+    sudo pip install numpy
+    sudo mkdir /usr/local/lib/pyilmbase
+    cd pyilmbase-2.3.0
+    ./configure --prefix=/usr/local/lib/pyilmbase --with-ilmbase-prefix=/usr/local/lib/ilmbase
+    sudo make -j4
+    sudo make install
+    cd
+    sudo tar -cvzf pyilmbase-2.3.0.tar.gz -C /usr/local/lib/pyilmbase .
+
 - script: |
     wget https://github.com/openexr/openexr/releases/download/v2.3.0/openexr-2.3.0.tar.gz
   displayName: Download OpenEXR archive
@@ -42,13 +55,15 @@ steps:
     cd openexr-2.3.0
     sudo mkdir /usr/local/lib/openexr
     ./bootstrap
-    ./configure --prefix=/usr/local/lib/openexr --with-ilmbase-prefix=/usr/local/lib/ilmlab --enable-imfexamples
+    ./configure --prefix=/usr/local/lib/openexr --with-ilmbase-prefix=/usr/local/lib/ilmbase --enable-imfexamples
     sudo make -j4
     sudo make install
     cd
+    ls /usr/local/lib/openexr
     sudo tar -cvzf openexr-2.3.0.tar.gz -C /usr/local/lib/openexr .
-    sudo cp openexr-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
+    cp openexr-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
     cp ilmbase-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
+    cp pyilmbase-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
     ls $(Build.ArtifactStagingDirectory)
   displayName: Build OpenEXR 
   workingDirectory: openexr-2.3.0
