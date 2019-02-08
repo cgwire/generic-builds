@@ -17,7 +17,6 @@ steps:
     cleanDestinationFolder: true 
   displayName: Extract ILMLab archive
 - script: |
-    cd ilmbase-2.3.0
     sudo mkdir /usr/local/lib/ilmbase
     ./bootstrap
     ./configure --prefix=/usr/local/lib/ilmbase
@@ -26,11 +25,16 @@ steps:
     cd 
     sudo tar -cvzf ilmbase-2.3.0.tar.gz -C /usr/local/lib/ilmbase .
   displayName: Build ILMBase 
+  workingDirectory: ilmbase-2.3.0
 - script: |
     wget https://github.com/openexr/openexr/releases/download/v2.3.0/pyilmbase-2.3.0.tar.gz
+- task: ExtractFiles@1
+  inputs:
+    archiveFilePatterns: '*.tar.gz' 
+    destinationFolder: ilmbase-2.3.0
+    cleanDestinationFolder: true 
+  displayName: Extract ILMLab archive
     tar -xvzf pyilmbase-2.3.0.tar.gz
-    CGWIRE_PYILMBASE_PATH=`realpath pyilmbase-2.3.0_env`
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:pyilmbase-2.3.0/lib
     sudo pip install numpy
     sudo mkdir /usr/local/lib/pyilmbase
     cd pyilmbase-2.3.0
@@ -40,6 +44,7 @@ steps:
     cd
     sudo tar -cvzf pyilmbase-2.3.0.tar.gz -C /usr/local/lib/pyilmbase .
   displayName: Build PyILMBase 
+  workingDirectory: pyilmbase-2.3.0
 - script: |
     wget https://github.com/openexr/openexr/releases/download/v2.3.0/openexr-2.3.0.tar.gz
   displayName: Download OpenEXR archive
@@ -65,6 +70,7 @@ steps:
     cp pyilmbase-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
     ls $(Build.ArtifactStagingDirectory)
   displayName: Build OpenEXR 
+  workingDirectory: openexr-2.3.0
 - task: GitHubRelease@0
   inputs:
     gitHubConnection: GitHub connection 1 
