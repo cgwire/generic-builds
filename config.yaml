@@ -26,27 +26,29 @@ steps:
     ./configure --prefix=/usr/local/lib/ilmbase
     sudo make -j4
     sudo make install
-    cd 
-    sudo tar -cvzf ilmbase-2.3.0.tar.gz -C /usr/local/lib/ilmbase .
+    cd /usr/local/lib/ilmbase
+    sudo tar -cvzf ilmbase-2.3.0.tar.gz * 
   displayName: Build ILMBase 
   workingDirectory: ilmbase-2.3.0
 - script: |
     wget https://github.com/openexr/openexr/releases/download/v2.3.0/pyilmbase-2.3.0.tar.gz
+  displayName: Download PyILMLab archive
 - task: ExtractFiles@1
   inputs:
     archiveFilePatterns: '*.tar.gz' 
     destinationFolder: pyilmbase-2.3.0
     cleanDestinationFolder: true 
-  displayName: Extract ILMLab archive
+  displayName: Extract PyILMLab archive
 - script: |
     sudo mkdir /usr/local/lib/pyilmbase
     sudo pip install numpy
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/pyilmbase/lib
     cd pyilmbase-2.3.0
     ./configure --prefix=/usr/local/lib/pyilmbase --with-ilmbase-prefix=/usr/local/lib/ilmbase
     sudo make -j4
     sudo make install
-    cd
-    sudo tar -cvzf pyilmbase-2.3.0.tar.gz -C /usr/local/lib/pyilmbase .
+    cd /usr/local/lib/pyilmbase
+    sudo tar -cvzf pyilmbase-2.3.0.tar.gz * 
   displayName: Build PyILMBase 
   workingDirectory: pyilmbase-2.3.0
 - script: |
@@ -66,12 +68,12 @@ steps:
     ./configure --prefix=/usr/local/lib/openexr --with-ilmbase-prefix=/usr/local/lib/ilmbase --enable-imfexamples
     sudo make -j4
     sudo make install
-    cd
-    ls /usr/local/lib/openexr
-    sudo tar -cvzf openexr-2.3.0.tar.gz -C /usr/local/lib/openexr .
-    cp openexr-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
-    cp ilmbase-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
-    cp pyilmbase-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
+    cd /usr/local/lib/openexr
+    sudo tar -cvzf openexr-2.3.0.tar.gz * 
+    ls
+    cp /usr/local/lib/openexr/openexr-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
+    cp /usr/local/lib/ilmbase/ilmbase-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
+    cp /usr/local/lib/pyilmbase/pyilmbase-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
     ls $(Build.ArtifactStagingDirectory)
   displayName: Build OpenEXR 
   workingDirectory: openexr-2.3.0
