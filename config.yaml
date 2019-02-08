@@ -26,7 +26,6 @@ steps:
     cd 
     sudo tar -cvzf ilmbase-2.3.0.tar.gz -C /usr/local/lib/ilmbase .
   displayName: Build ILMBase 
-  workingDirectory: ilmbase-2.3.0
 - script: |
     wget https://github.com/openexr/openexr/releases/download/v2.3.0/pyilmbase-2.3.0.tar.gz
     tar -xvzf pyilmbase-2.3.0.tar.gz
@@ -40,7 +39,7 @@ steps:
     sudo make install
     cd
     sudo tar -cvzf pyilmbase-2.3.0.tar.gz -C /usr/local/lib/pyilmbase .
-
+  displayName: Build PyILMBase 
 - script: |
     wget https://github.com/openexr/openexr/releases/download/v2.3.0/openexr-2.3.0.tar.gz
   displayName: Download OpenEXR archive
@@ -66,7 +65,6 @@ steps:
     cp pyilmbase-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
     ls $(Build.ArtifactStagingDirectory)
   displayName: Build OpenEXR 
-  workingDirectory: openexr-2.3.0
 - task: GitHubRelease@0
   inputs:
     gitHubConnection: GitHub connection 1 
