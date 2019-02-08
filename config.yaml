@@ -31,9 +31,10 @@ steps:
 - task: ExtractFiles@1
   inputs:
     archiveFilePatterns: '*.tar.gz' 
-    destinationFolder: ilmbase-2.3.0
+    destinationFolder: pyilmbase-2.3.0
     cleanDestinationFolder: true 
   displayName: Extract ILMLab archive
+- script: |
     tar -xvzf pyilmbase-2.3.0.tar.gz
     sudo pip install numpy
     sudo mkdir /usr/local/lib/pyilmbase
