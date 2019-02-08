@@ -93,8 +93,7 @@ steps:
     ./bootstrap
     cmake -DUSE_HDF5=ON -DUSE_EXEMPLES=ON -DALEMBIC_LIB_USES_TR1=ON -DALEMBIC_LIB_USES_BOOST=OFF -DILM_INCLUDE_DIR=/usr/local/lib/ilmbase/include/OpenEXR ../alembic-1.7.10
     sudo make -j4
-    sudo make install
-    cd /usr/local/lib/ilmbase
+    sudo make test
     sudo tar -cvzf alembic-1.7.10.tar.gz * 
   displayName: Build Alembic 
   workingDirectory: alembic
