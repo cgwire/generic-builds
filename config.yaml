@@ -77,6 +77,27 @@ steps:
     ls $(Build.ArtifactStagingDirectory)
   displayName: Build OpenEXR 
   workingDirectory: openexr-2.3.0
+- script: |
+    wget https://github.com/alembic/alembic/archive/1.7.10.tar.gz
+  displayName: Download Alembic archive
+- task: ExtractFiles@1
+  inputs:
+    archiveFilePatterns: '*.tar.gz' 
+    destinationFolder: alembic-1.7.10
+    cleanDestinationFolder: true 
+  displayName: Extract Alembic archive
+- script: |
+    sudo mkdir alembic
+    ls
+    cd alembic
+    ./bootstrap
+    cmake -DUSE_HDF5=ON -DUSE_EXEMPLES=ON -DALEMBIC_LIB_USES_TR1=ON -DALEMBIC_LIB_USES_BOOST=OFF -DILM_INCLUDE_DIR=/usr/local/lib/ilmbase/include/OpenEXR ../alembic-1.7.10
+    sudo make -j4
+    sudo make install
+    cd /usr/local/lib/ilmbase
+    sudo tar -cvzf alembic-1.7.10.tar.gz * 
+  displayName: Build Alembic 
+  workingDirectory: alembic
 - task: GitHubRelease@0
   inputs:
     gitHubConnection: GitHub connection 1 
