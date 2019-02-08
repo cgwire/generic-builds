@@ -18,6 +18,8 @@ steps:
   displayName: Extract ILMLab archive
 - script: |
     sudo mkdir /usr/local/lib/ilmbase
+    ls
+    cd ilmbase-2.3.0
     ./bootstrap
     ./configure --prefix=/usr/local/lib/ilmbase
     sudo make -j4
@@ -35,9 +37,8 @@ steps:
     cleanDestinationFolder: true 
   displayName: Extract ILMLab archive
 - script: |
-    tar -xvzf pyilmbase-2.3.0.tar.gz
-    sudo pip install numpy
     sudo mkdir /usr/local/lib/pyilmbase
+    sudo pip install numpy
     cd pyilmbase-2.3.0
     ./configure --prefix=/usr/local/lib/pyilmbase --with-ilmbase-prefix=/usr/local/lib/ilmbase
     sudo make -j4
