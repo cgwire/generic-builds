@@ -42,9 +42,9 @@ steps:
 - script: |
     sudo mkdir /usr/local/lib/pyilmbase
     sudo pip install numpy
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/pyilmbase/lib
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/ilmbase/lib
     cd pyilmbase-2.3.0
-    ./configure --prefix=/usr/local/lib/pyilmbase --with-ilmbase-prefix=/usr/local/lib/ilmbase/lib
+    ./configure --prefix=/usr/local/lib/pyilmbase --with-ilmbase-prefix=/usr/local/lib/ilmbase
     sudo make -j4
     sudo make install
     cd /usr/local/lib/pyilmbase
