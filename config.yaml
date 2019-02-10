@@ -70,11 +70,6 @@ steps:
     sudo make install
     cd /usr/local/lib/openexr
     sudo tar -cvzf openexr-2.3.0.tar.gz * 
-    ls
-    cp /usr/local/lib/openexr/openexr-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
-    cp /usr/local/lib/ilmbase/ilmbase-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
-    cp /usr/local/lib/pyilmbase/pyilmbase-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
-    ls $(Build.ArtifactStagingDirectory)
   displayName: Build OpenEXR 
   workingDirectory: openexr-2.3.0
 - script: |
@@ -89,13 +84,21 @@ steps:
 - script: |
     sudo mkdir alembic
     ls
-    cd alembic
+    cd alembic-1.7.10
     ./bootstrap
-    cmake -DUSE_HDF5=ON -DUSE_EXEMPLES=ON -DALEMBIC_LIB_USES_TR1=ON -DALEMBIC_LIB_USES_BOOST=OFF -DILM_INCLUDE_DIR=/usr/local/lib/ilmbase/include/OpenEXR ../alembic-1.7.10
+    cmake -DUSE_HDF5=ON -DUSE_EXEMPLES=ON -DALEMBIC_LIB_USES_TR1=ON -DALEMBIC_LIB_USES_BOOST=OFF -DILM_INCLUDE_DIR=/usr/local/lib/ilmbase/include/OpenEXR ../alembic-1.7.10 -DCMAKE_INSTALL_PREFIX=/usr/local/lib/alembic
     sudo make -j4
-    sudo make test
+    sudo make install
+    cd /usr/local/lib/alembic
     sudo tar -cvzf alembic-1.7.10.tar.gz * 
   displayName: Build Alembic
+- script: |
+    ls
+    cp /usr/local/lib/openexr/openexr-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
+    cp /usr/local/lib/ilmbase/ilmbase-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
+    cp /usr/local/lib/pyilmbase/pyilmbase-2.3.0.tar.gz $(Build.ArtifactStagingDirectory)
+    ls $(Build.ArtifactStagingDirectory)
+  displayName: Prepare Release
 - task: GitHubRelease@0
   inputs:
     gitHubConnection: GitHub connection 1 
