@@ -27,7 +27,7 @@ steps:
     sudo make -j4
     sudo make install
     cd /usr/local/lib/ilmbase
-    tar -cf - * | gzip > ilmbase-2.3.0.tar.gz * 
+    sudo tar -cf - * | gzip > ilmbase-2.3.0.tar.gz * 
   displayName: Build ILMBase 
   workingDirectory: ilmbase-2.3.0
 - script: |
