@@ -28,7 +28,7 @@ steps:
     sudo make install
     cd /usr/local/lib/ilmbase
     sudo tar -cf ilmbase-2.3.0.tar * 
-    sudo gunzip -c ilmbase-2.3.0.tar > ilmbase-2.3.0.tar.gz
+    sudo gzip ilmbase-2.3.0.tar
   displayName: Build ILMBase 
   workingDirectory: ilmbase-2.3.0
 - script: |
