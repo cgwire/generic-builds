@@ -74,7 +74,8 @@ VS_VERSION="Visual Studio 14 2015 Win64"
           -DCMAKE_INSTALL_PREFIX="${ROOT}/dep/openexr"                        \
           -DZLIB_INCLUDE_DIR="${ROOT}/dep/zlib/include"                       \
           -DZLIB_LIBRARY="${ROOT}/dep/zlib/lib/zlib.lib"                      \
-          -DBoost_INCLUDE_DIR="${ROOT}/dep/Boost/include/boost-1_60/"         \
+          -DBOOST_ROOT="${ROOT}/dep/Boost/"                                   \
+          -DBoost_INCLUDE_DIR="${ROOT}/dep/Boost/include/boost-1_60/"           \
           -DBoost_LIBRARIES="${ROOT}/dep/Boost/lib"                           \
           -DPYTHON_INCLUDE_DIR="${ADSK_3DSMAX_x64_2018}/python/include"       \
           -DPYTHON_LIBRARY="${ADSK_3DSMAX_x64_2018}/python/libs/python27.lib" \
@@ -118,9 +119,13 @@ VS_VERSION="Visual Studio 14 2015 Win64"
           -DUSE_TESTS=OFF                                                      \
           -DILMBASE_ROOT="${ROOT}/dep/openexr"                                \
           -DHDF5_ROOT="${ROOT}/dep/hdf5"                                      \
-          -DBOOST_INCLUDE_DIR="${ROOT}/dep/Boost/include/boost_1_60_0"          \
-          -DBOOST_LIBRARY_DIR="${ROOT}/dep/Boost/lib"                          \
+          -DBOOST_ROOT="${ROOT}/dep/Boost/"                                   \
+          -DZLIB_INCLUDE_DIR="${ROOT}/dep/zlib/include"                       \
+          -DZLIB_LIBRARY="${ROOT}/dep/zlib/lib/zlib.lib"                      \
+          -DBoost_INCLUDE_DIR="${ROOT}/dep/Boost/include/boost-1_60/"           \
+          -DBoost_LIBRARIES="${ROOT}/dep/Boost/lib"                           \
           -DALEMBIC_PYILMBASE_INCLUDE_DIRECTORY="${ROOT}/dep/openexr/include"          \
+          -DALEMBIC_PYILMBASE_PYIMATH_LIB="${ROOT}/dep/openexr/lib/PyImath.lib"          \
           -DALEMBIC_PYIMATH_MODULE_DIRECTORY="${ROOT}/dep/openexr/lib/python2.7/site-packages/" \
           -DPYTHON_EXECUTABLE="${ADSK_3DSMAX_x64_2018}/3dsmaxpy.exe"                            \
           -DPYTHON_INCLUDE_DIR="${ADSK_3DSMAX_x64_2018}/python/include"                         \
@@ -133,3 +138,16 @@ VS_VERSION="Visual Studio 14 2015 Win64"
     cmake --build alembic/build --target INSTALL --config release
 
     # --------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+git clone https://github.com/Microsoft/vcpkg.git
+./bootstrap-vcpkg.bat
+./vcpkg.exe integrate install
+./vcpkg install alembic:x64-Windows
