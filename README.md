@@ -1,4 +1,4 @@
-# generic-builds
+# Animation / VFX builds
 
 Build scripts and artifacts for major DCC plugins like Alembic.
 
