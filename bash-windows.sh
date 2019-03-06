@@ -32,24 +32,24 @@ VS_VERSION="Visual Studio 14 2015 Win64"
 
     # ZLIB ---------------------------------------------------------------------
     # No wget on MINGW64, using curl instead (-L flag to follow redirect)
-    curl -L https://zlib.net/zlib1211.zip --output zlib.zip
-    unzip zlib.zip
+    curl -L https://zlib.net/zlib1211.zip --output zlib1211.zip
+    unzip zlib1211.zip
     cmake -G "${VS_VERSION}"                                                  \
-          -S "${ROOT}/zlib"                                                   \
-          -B "${ROOT}/zlib/build"                                             \
+          -S "${ROOT}/zlib-1.2.11"                                                   \
+          -B "${ROOT}/zlib-1.2.11/build"                                             \
           -DCMAKE_INSTALL_PREFIX="${ROOT}/dep/zlib"
 
-    cmake --build zlib/build --target INSTALL --config release
+    cmake --build zlib-1.2.11/build --target INSTALL --config release
 
     # I found zlib1.dll to be already installed on my system,
     # so getting the headers is enough, I don't build the library
     # --------------------------------------------------------------------------
 
     # BOOST --------------------------------------------------------------------
-    curl -L https://sourceforge.net/projects/boost/files/boost/1.60.0/boost_1_60_0.zip/download --output boost.zip
-    unzip boost.zip
-    cd boost
-    ./bootstrap
+    curl -L https://sourceforge.net/projects/boost/files/boost/1.60.0/boost_1_60_0.zip/download --output boost_1_60_0.zip
+    unzip boost_1_60_0.zip
+    cd boost_1_60_0
+    ./bootstrap.bat
     #./b2  # Builds boost -> coffee time !
     #./b2 --prefix=${ROOT}/toto --with-python toolset=msvc address-model=64 link=shared variant=release install
     #b2 --prefix="${ROOT}/dep/Boost" --with-python -j8 --build-type=complete link=static,shared address-model=64 install
@@ -75,7 +75,7 @@ VS_VERSION="Visual Studio 14 2015 Win64"
           -DZLIB_INCLUDE_DIR="${ROOT}/dep/zlib/include"                       \
           -DZLIB_LIBRARY="${ROOT}/dep/zlib/lib/zlib.lib"                      \
           -DBOOST_ROOT="${ROOT}/dep/Boost/"                                   \
-          -DBoost_INCLUDE_DIR="${ROOT}/dep/Boost/include/boost-1_60/"           \
+          -DBoost_INCLUDE_DIR="${ROOT}/dep/Boost/include/boost-1_60/"         \
           -DBoost_LIBRARIES="${ROOT}/dep/Boost/lib"                           \
           -DPYTHON_INCLUDE_DIR="${ADSK_3DSMAX_x64_2018}/python/include"       \
           -DPYTHON_LIBRARY="${ADSK_3DSMAX_x64_2018}/python/libs/python27.lib" \
@@ -109,21 +109,20 @@ VS_VERSION="Visual Studio 14 2015 Win64"
     curl -L https://github.com/alembic/alembic/archive/1.7.10.tar.gz --output alembic.tar.gz
     tar -xvf alembic.tar.gz
 
+    # Build Alembic.dll with version number (to avoid conflicts)
+    sed -i "s/SET_TARGET_PROPERTIES(Alembic PROPERTIES/SET_TARGET_PROPERTIES(Alembic PROPERTIES OUTPUT_NAME \${PROJECT_NAME}_\${PROJECT_VERSION}/" alembic/lib/Alembic/CMakeLists.txt
+
     cmake -G "${VS_VERSION}"                                                  \
           -S "${ROOT}/alembic"                                                \
           -B "${ROOT}/alembic/build"                                          \
           -DUSE_PYALEMBIC=ON                                                  \
-          -DUSE_HDF5=ON                                                       \
-          -DUSE_STATIC_HDF5=ON                                                \
-          -DUSE_STATIC_BOOST=ON                                               \
+          -DUSE_HDF5=OFF                                                       \
           -DUSE_TESTS=OFF                                                      \
           -DILMBASE_ROOT="${ROOT}/dep/openexr"                                \
           -DHDF5_ROOT="${ROOT}/dep/hdf5"                                      \
+          -DHDF5_DIR="${ROOT}/dep/hdf5/cmake/hdf5"                                      \
           -DBOOST_ROOT="${ROOT}/dep/Boost/"                                   \
-          -DZLIB_INCLUDE_DIR="${ROOT}/dep/zlib/include"                       \
-          -DZLIB_LIBRARY="${ROOT}/dep/zlib/lib/zlib.lib"                      \
-          -DBoost_INCLUDE_DIR="${ROOT}/dep/Boost/include/boost-1_60/"           \
-          -DBoost_LIBRARIES="${ROOT}/dep/Boost/lib"                           \
+          -DZLIB_ROOT="${ROOT}/dep/zlib"                                       \
           -DALEMBIC_PYILMBASE_INCLUDE_DIRECTORY="${ROOT}/dep/openexr/include"          \
           -DALEMBIC_PYILMBASE_PYIMATH_LIB="${ROOT}/dep/openexr/lib/PyImath.lib"          \
           -DALEMBIC_PYIMATH_MODULE_DIRECTORY="${ROOT}/dep/openexr/lib/python2.7/site-packages/" \
@@ -132,6 +131,10 @@ VS_VERSION="Visual Studio 14 2015 Win64"
           -DPYTHON_LIBRARY="${ADSK_3DSMAX_x64_2018}/python/libs/python27.lib"                   \
           -DCMAKE_INSTALL_PREFIX="${ROOT}/dep/alembic"
 
+          -DZLIB_INCLUDE_DIR="${ROOT}/dep/zlib/include"                       \
+          -DZLIB_LIBRARY="${ROOT}/dep/zlib/lib/zlib.lib"                      \
+          -DBoost_INCLUDE_DIR="${ROOT}/dep/Boost/include/boost-1_60/"           \
+          -DBoost_LIBRARIES="${ROOT}/dep/Boost/lib"                           \
           #-DBOOST_INCLUDEDIR="${ROOT}/dep/Boost/include/boost-1_60/"          \
           #-DBOOST_LIBRARYDIR="${ROOT}/dep/Boost/lib"                          \
           #-DUSE_STATIC_BOOST=1                                                        \
